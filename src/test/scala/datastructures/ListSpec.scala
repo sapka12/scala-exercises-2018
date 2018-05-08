@@ -61,7 +61,7 @@ class ListSpec extends FlatSpec with Matchers {
 
   "map" should "replace all elements in the list by the given function" in {
     val X: (Int, Int) => Int = _ * _
-    val x3 = X(3, _)
+    val x3: Int => Int = X(3, _)
 
     map(List(1, 2, 3))(x3) shouldBe List(3, 6, 9)
     map(List())(x3) shouldBe List()
