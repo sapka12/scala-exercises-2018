@@ -71,4 +71,53 @@ class ListSpec extends FlatSpec with Matchers {
     reduce(List(1, 2, 3), 0)((x, y) => x + y) shouldBe 6
   }
 
+  "filter" should "filter by a " in {
+    val even: Int => Boolean = _ % 2 == 0
+
+    filter(List(1, 2, 3), even) shouldBe List(2)
+    filter[Int](List(1, 2, 3), _ > 5) shouldBe List()
+    filter[Int](List(1, 2, 3), _ < 5) shouldBe List(1, 2, 3)
+    filter[Int](List(), _ < 5) shouldBe List()
+  }
+
+  "append" should "concatenate" in {
+    val l1 = List(1, 2, 3)
+    val l2 = List(4, 5, 6)
+    append(l1, l2) shouldBe List(1, 2, 3, 4, 5, 6)
+  }
+
+  "flatten"  should "flatten" in {
+    flatten(List(List(1, 2), List(3))) shouldBe List(1, 2, 3)
+    flatten(List(List(), List(3))) shouldBe List(3)
+    flatten(List(List(), List(2, 3))) shouldBe List(2, 3)
+    flatten(List(List(1, 2), List())) shouldBe List(1, 2)
+    flatten(List(List(1), List())) shouldBe List(1)
+    flatten(List(List(), List())) shouldBe List()
+  }
+
+
+  behavior of "flatMap"
+
+  it should "boxing" in {
+    flatMap[String, Int](List("1", "22"))(s => List(s.length)) shouldBe List(1, 2)
+    flatMap[List[Int], Int](List(List(1, 2), List(3)))(identity) shouldBe List(1, 2, 3)
+    flatMap[Int, Int](List(1, 2))(a => List(a, a * a)) shouldBe List(1, 1, 2, 4)
+  }
+
+  it should "do magic" in {
+    val numbers = List(1, 2, 3)
+    val chars = List('a', 'b')
+
+    val fm = flatMap(numbers)(num =>
+      map(chars)(ch =>
+        (ch, num)
+      )
+    )
+
+    fm shouldBe List(
+      ('a', 1), ('b', 1),
+      ('a', 2), ('b', 2),
+      ('a', 3), ('b', 3)
+    )
+  }
 }

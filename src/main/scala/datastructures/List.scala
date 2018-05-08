@@ -1,5 +1,7 @@
 package fpinscala.datastructures
 
+import scala.annotation.tailrec
+
 sealed trait List[+A] // `List` data type, parameterized on a type, `A`
 case object Nil extends List[Nothing] // A `List` data constructor representing the empty list
 /* Another data constructor, representing nonempty lists. Note that `tail` is another `List[A]`,
@@ -81,20 +83,22 @@ object List { // `List` companion object. Contains functions for creating and wo
     case _ => Nil
   }
 
+  def reverse[A](l: List[A]): List[A] = ???
+
   def init[A](l: List[A]): List[A] = ???
 
-  def length[A](l: List[A]): Int = ???
-
   def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = ???
+
+  def reduce[A](l: List[A], z: A)(f: (A, A) ⇒ A): A = foldLeft[A, A](l, z)(f)
+
+  def length[A](l: List[A]): Int = ???
 
   def filter[A](l: List[A], f: A => Boolean): List[A] = ???
 
   def map[A,B](l: List[A])(f: A => B): List[B] = ???
 
+  def flatten[A](l: List[List[A]]): List[A] = ???
+
   def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = ???
-
-  def reduce[A](l: List[A], z: A)(f: (A, A) ⇒ A): A = ???
-
-  def aggregate[A, B](l: List[A], z: B)(seqop: (B, A) ⇒ B, combop: (B, B) ⇒ B): B = ???
 
 }
