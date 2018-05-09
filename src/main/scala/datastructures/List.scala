@@ -147,4 +147,5 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = flatten(map(l)(f))
 
+  def separate[A](l: List[A], p: A => Boolean): List[List[A]] = ??? 
 }
