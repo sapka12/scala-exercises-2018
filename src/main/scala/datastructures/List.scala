@@ -101,4 +101,5 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = ???
 
+  def separate[A](l: List[A], p: A => Boolean): List[List[A]] = ??? 
 }

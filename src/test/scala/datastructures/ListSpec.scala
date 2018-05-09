@@ -120,4 +120,13 @@ class ListSpec extends FlatSpec with Matchers {
       ('a', 3), ('b', 3)
     )
   }
+
+  "separate" should "separate elements to two Lists" in {
+    val list = List(1, 2, 3, 4)
+    val predicate: Int => Boolean = _ % 2 == 0
+
+    separate(list, predicate) shouldBe List(List(2, 4), List(1, 3))
+    separate(List(), predicate) shouldBe List(List(), List())
+    separate(List(1, 3), predicate) shouldBe List(List(), List(1, 3))
+  }
 }
