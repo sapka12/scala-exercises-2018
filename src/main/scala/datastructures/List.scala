@@ -41,11 +41,14 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(h,t) => Cons(h, append(t, a2))
     }
 
-  def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = // Utility functions
-    as match {
+  def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldRightUsingFoldLeft(as, z)(f)
+
+  def standardFoldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
       case Nil => z
       case Cons(x, xs) => f(x, foldRight(xs, z)(f))
-    }
+  }
+
+  def foldRightUsingFoldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(as, z)((a, b) => f(b, a))
 
   def sum2(ns: List[Int]) =
     foldRight(ns, 0)((x,y) => x + y)
@@ -83,10 +86,14 @@ object List { // `List` companion object. Contains functions for creating and wo
     case _ => Nil
   }
 
-  def reverse[A](l: List[A]): List[A] = l match {
+  def reverse[A](l: List[A]): List[A] = reverseUsingFoldLeft(l)
+
+  def standardReverse[A](l: List[A]): List[A] = l match {
     case Nil => Nil
     case Cons(h, t) => Cons(lastElement(l), reverse(allButLast(l)))
   }
+
+  def reverseUsingFoldLeft[A](l: List[A]): List[A] = foldLeft[A, List[A]](l, Nil)((t, h) => Cons(h, t))
 
   def lastElement[A](l: List[A]): A = l match {
     case Cons(h, Nil) => h
@@ -113,10 +120,14 @@ object List { // `List` companion object. Contains functions for creating and wo
     case Cons(_, t) => length(t) + 1
   }
 
-  def filter[A](l: List[A], f: A => Boolean): List[A] = l match {
+  def filter[A](l: List[A], f: A => Boolean): List[A] = filterUsingFlatMap(l, f)
+
+  def standardFilter[A](l: List[A], f: A => Boolean): List[A] = l match {
     case Nil => Nil
     case Cons(h, t) => if (f(h)) Cons(h, filter(t, f)) else filter(t, f)
   }
+
+  def filterUsingFlatMap[A](l: List[A], p: A => Boolean): List[A] = flatMap(l)(element => if (p(element)) Cons(element, Nil) else Nil)
 
   def map[A,B](l: List[A])(f: A => B): List[B] = l match {
     case Nil => Nil
