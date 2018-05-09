@@ -121,7 +121,7 @@ class ListSpec extends FlatSpec with Matchers {
     )
   }
 
-  "partition" should "partition elements to two Lists" in {
+  "partition" should "partition elements to two Lists using a predicate" in {
     val list = List(1, 2, 3, 4)
     val predicate: Int => Boolean = _ % 2 == 0
 
