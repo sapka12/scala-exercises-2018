@@ -147,5 +147,22 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = flatten(map(l)(f))
 
-  def separate[A](l: List[A], p: A => Boolean): List[List[A]] = ??? 
+  def partition[A](l: List[A], p: A => Boolean): List[List[A]] = partitionUsingRightFold(l, p)
+
+  def partitionUsingRightFold[A](l: List[A], p: A => Boolean): List[List[A]] = foldRight[A, List[List[A]]](l, List(List(), List()))(
+    (element, partitionedList) => addToPartitionedList(partitionedList, element, p(element))
+  )
+
+  def addToPartitionedList[A](sepList: List[List[A]], element: A, addToFirstList: Boolean): List[List[A]] = sepList match {
+    case Cons(f, Cons(s, Nil)) => if (addToFirstList) Cons(Cons(element, f), Cons(s, Nil)) else  Cons(f, Cons(Cons(element, s), Nil))
+    case _ => List(List(), List())
+
+  }
+
+  def standardPartition[A](l: List[A], p: A => Boolean): List[List[A]] = l match {
+    case Nil => List(List(), List())
+    case Cons(h, t) => standardPartition(t, p) match {
+      case Cons(f, Cons(s, Nil)) => if (p(h)) Cons(Cons(h, f), Cons(s, Nil)) else Cons(f, Cons(Cons(h, s), Nil))
+    }
+  }
 }
