@@ -41,11 +41,13 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(h,t) => Cons(h, append(t, a2))
     }
 
-  def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = // Utility functions
-    as match {
-      case Nil => z
-      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
-    }
+//  def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = // Utility functions
+//    as match {
+//      case Nil => z
+//      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+//    }
+
+  def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((b,a) => f(a,b))
 
   def sum2(ns: List[Int]) =
     foldRight(ns, 0)((x,y) => x + y)
@@ -83,22 +85,40 @@ object List { // `List` companion object. Contains functions for creating and wo
     case _ => Nil
   }
 
-  def reverse[A](l: List[A]): List[A] = ???
+//  def reverse[A](l: List[A]): List[A] = l match {
+//    case Cons(a, as) => append(reverse(as), List(a))
+//    case _ => Nil
+//  }
 
-  def init[A](l: List[A]): List[A] = ???
+  def reverse[A](l: List[A]): List[A] = foldLeft(l, List[A]())((acc,h) => Cons(h,acc))
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = ???
+  def init[A](l: List[A]): List[A] = reverse(tail(reverse(l)))
 
-  def reduce[A](l: List[A], z: A)(f: (A, A) ⇒ A): A = foldLeft[A, A](l, z)(f)
+  @tailrec
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+    case Cons(a, as) => foldLeft(as, f(z, a))(f)
+    case Nil => z
+  }
 
-  def length[A](l: List[A]): Int = ???
+  def reduce[A](l: List[A], z: A)(f: (A, A) => A): A = foldLeft[A, A](l, z)(f)
 
-  def filter[A](l: List[A], f: A => Boolean): List[A] = ???
+  def length[A](l: List[A]): Int = foldLeft[A, Int](l, 0)((aggrLength, _) => aggrLength + 1)
 
-  def map[A,B](l: List[A])(f: A => B): List[B] = ???
+  def filter[A](l: List[A], f: A => Boolean): List[A] = flatMap[A, A](l)(a =>
+    if (f(a)) List(a) else List()
+  )
 
-  def flatten[A](l: List[List[A]]): List[A] = ???
+//  def filter[A](l: List[A], f: A => Boolean): List[A] = foldLeft[A, List[A]](l, Nil)((b, a) =>
+//    if (f(a)) append(b, List(a))
+//    else b
+//  )
 
-  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = ???
+  def map[A,B](l: List[A])(f: A => B): List[B] = foldLeft[A, List[B]](l, Nil)((b, a) => append(b, List(f(a))))
+
+  def flatten[A](l: List[List[A]]): List[A] = foldLeft[List[A], List[A]](l, Nil)((b, a) =>
+    append(b, a)
+  )
+
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = flatten(map(l)(f))
 
 }
