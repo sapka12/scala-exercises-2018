@@ -83,22 +83,54 @@ object List { // `List` companion object. Contains functions for creating and wo
     case _ => Nil
   }
 
-  def reverse[A](l: List[A]): List[A] = ???
+  def reverse[A](l: List[A]): List[A] = l match {
+    case Nil => Nil
+    case Cons(h, t) => Cons(lastElement(l), reverse(allButLast(l)))
+  }
 
-  def init[A](l: List[A]): List[A] = ???
+  def lastElement[A](l: List[A]): A = l match {
+    case Cons(h, Nil) => h
+    case Cons(h, t) => lastElement(t)
+  }
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = ???
+  def allButLast[A](l: List[A]): List[A] = l match {
+    case Nil => Nil
+    case Cons(_, Nil) => Nil
+    case Cons(h, t) => Cons(h, allButLast(t))
+  }
+
+  def init[A](l: List[A]): List[A] = allButLast(l)
+
+  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+    case Nil => z
+    case Cons(h, t) => f(foldLeft(t, z)(f), h)
+  }
 
   def reduce[A](l: List[A], z: A)(f: (A, A) ⇒ A): A = foldLeft[A, A](l, z)(f)
 
-  def length[A](l: List[A]): Int = ???
+  def length[A](l: List[A]): Int = l match {
+    case Nil => 0
+    case Cons(_, t) => length(t) + 1
+  }
 
-  def filter[A](l: List[A], f: A => Boolean): List[A] = ???
+  def filter[A](l: List[A], f: A => Boolean): List[A] = l match {
+    case Nil => Nil
+    case Cons(h, t) => if (f(h)) Cons(h, filter(t, f)) else filter(t, f)
+  }
 
-  def map[A,B](l: List[A])(f: A => B): List[B] = ???
+  def map[A,B](l: List[A])(f: A => B): List[B] = l match {
+    case Nil => Nil
+    case Cons(h, t) => Cons(f(h), map(t)(f))
+  }
 
-  def flatten[A](l: List[List[A]]): List[A] = ???
+  def flatten[A](l: List[List[A]]): List[A] = l match {
+    case Nil => Nil
+    case Cons(hLists, tLists) => hLists match {
+      case Nil => flatten(tLists)
+      case Cons(h, t) => Cons(h, flatten(Cons(t, tLists)))
+    }
+  }
 
-  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = ???
+  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = flatten(map(l)(f))
 
 }
