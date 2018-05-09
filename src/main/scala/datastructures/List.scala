@@ -67,6 +67,7 @@ object List { // `List` companion object. Contains functions for creating and wo
     case Cons(_, tail) => Cons(h, tail)
   }
 
+  @tailrec
   def drop[A](l: List[A], n: Int): List[A] =
     if (n <= 0) l
     else l match {
@@ -79,6 +80,7 @@ object List { // `List` companion object. Contains functions for creating and wo
     case _ => Nil
   }
 
+  @tailrec
   def dropWhile[A](l: List[A], f: A => Boolean): List[A] = l match {
     case Cons(a, as) =>
       if (f(a)) dropWhile(as, f)
@@ -95,6 +97,7 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def reverseUsingFoldLeft[A](l: List[A]): List[A] = foldLeft[A, List[A]](l, Nil)((t, h) => Cons(h, t))
 
+  @tailrec
   def lastElement[A](l: List[A]): A = l match {
     case Cons(h, Nil) => h
     case Cons(h, t) => lastElement(t)
