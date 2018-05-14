@@ -120,4 +120,20 @@ class ListSpec extends FlatSpec with Matchers {
       ('a', 3), ('b', 3)
     )
   }
+
+  behavior of "List"
+
+  it should "avg with foldLeft" in {
+
+    import fpinscala.datastructures.Nil
+
+    def avg(nums: List[Double], default: Double = 0.0): Double = nums match {
+      case Nil => default
+      case _ => ???
+    }
+
+    avg(List(1, 2, 3)) shouldBe 2
+    avg(List(1, 2, 3, 4)) shouldBe 2.5
+    avg(List()) shouldBe 0
+  }
 }
