@@ -4,6 +4,8 @@ import org.scalatest.{FlatSpec, Matchers}
 import fpinscala.datastructures.List
 import fpinscala.datastructures.List._
 
+import scala.annotation.tailrec
+
 class ListSpec extends FlatSpec with Matchers {
 
   "tail" should "behave like tail" in {
@@ -129,11 +131,37 @@ class ListSpec extends FlatSpec with Matchers {
 
     def avg(nums: List[Double], default: Double = 0.0): Double = nums match {
       case Nil => default
-      case _ => ???
+      case _ =>
+        val (sum, count) = foldLeft(map(nums)((_, 1)), (0.0, 0))((aggr, actual) => (aggr._1 + actual._1, aggr._2 + 1))
+        sum / count
     }
 
     avg(List(1, 2, 3)) shouldBe 2
     avg(List(1, 2, 3, 4)) shouldBe 2.5
     avg(List()) shouldBe 0
+  }
+
+  "examples" should "avg with foldLeft" in {
+
+    def fact_not_tailrec(i: Int): Int =
+      if (i < 2) 1
+      else i * fact(i - 1)
+
+    def fact(i: Int): Int = {
+
+      @tailrec
+      def go(x: Int, aggr: Int): Int =
+        if (x < 2) aggr
+        else go(x - 1, x * aggr)
+
+      go(i, 1)
+    }
+
+    fact(1) shouldBe 1
+    fact(2) shouldBe 2
+    fact(3) shouldBe 6
+    fact(4) shouldBe 24
+    fact(5) shouldBe 120
+
   }
 }
