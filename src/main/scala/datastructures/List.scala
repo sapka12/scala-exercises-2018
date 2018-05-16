@@ -165,4 +165,13 @@ object List { // `List` companion object. Contains functions for creating and wo
       case Cons(f, Cons(s, Nil)) => if (p(h)) Cons(Cons(h, f), Cons(s, Nil)) else Cons(f, Cons(Cons(h, s), Nil))
     }
   }
+
+  def avg(nums: List[Double], default: Double = 0.0): Double = foldLeft(nums, (default, 0))(
+    (avgContext, item) => ((avgContext._1 * avgContext._2 + item) / (avgContext._2 + 1), avgContext._2 + 1)
+  )._1
+
+  def zipWith[A, B](list: List[A], other: List[B]): List[(A, B)] = ???
+
+  def hasSubsequence[A](list: List[A], subList: List[A]): Boolean = ???
+
 }
