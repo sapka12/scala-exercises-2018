@@ -18,7 +18,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   def product(ds: List[Double]): Double = ds match {
     case Nil => 1.0
     case Cons(0.0, _) => 0.0
-    case Cons(x,xs) => x * product(xs)
+    case Cons(x, xs) => x * product(xs)
   }
 
   def apply[A](as: A*): List[A] = // Variadic function syntax
@@ -26,8 +26,8 @@ object List { // `List` companion object. Contains functions for creating and wo
     else Cons(as.head, apply(as.tail: _*))
 
 
-//  Cons(1, Cons(2, Cons(3, Cons(4, Cons(5, Nil)))))
-  val x = List(1,2,3,4,5) match {
+  //  Cons(1, Cons(2, Cons(3, Cons(4, Cons(5, Nil)))))
+  val x = List(1, 2, 3, 4, 5) match {
     case Cons(x, Cons(2, Cons(4, _))) => x
     case Nil => 42
     case Cons(x, Cons(y, Cons(3, Cons(4, _)))) => x + y
@@ -38,20 +38,20 @@ object List { // `List` companion object. Contains functions for creating and wo
   def append[A](a1: List[A], a2: List[A]): List[A] =
     a1 match {
       case Nil => a2
-      case Cons(h,t) => Cons(h, append(t, a2))
+      case Cons(h, t) => Cons(h, append(t, a2))
     }
 
-  def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = foldRightUsingFoldLeft(as, z)(f)
+  def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = foldRightUsingFoldLeft(as, z)(f)
 
-  def standardFoldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = as match {
-      case Nil => z
-      case Cons(x, xs) => f(x, foldRight(xs, z)(f))
+  def standardFoldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = as match {
+    case Nil => z
+    case Cons(x, xs) => f(x, foldRight(xs, z)(f))
   }
 
   def foldRightUsingFoldLeft[A, B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(as, z)((a, b) => f(b, a))
 
   def sum2(ns: List[Int]) =
-    foldRight(ns, 0)((x,y) => x + y)
+    foldRight(ns, 0)((x, y) => x + y)
 
   def product2(ns: List[Double]) =
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
@@ -71,7 +71,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   def drop[A](l: List[A], n: Int): List[A] =
     if (n <= 0) l
     else l match {
-      case Cons(h, t) => drop(t, n-1)
+      case Cons(h, t) => drop(t, n - 1)
       case _ => Nil
     }
 
@@ -111,7 +111,7 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def init[A](l: List[A]): List[A] = allButLast(l)
 
-  def foldLeft[A,B](l: List[A], z: B)(f: (B, A) => B): B = l match {
+  def foldLeft[A, B](l: List[A], z: B)(f: (B, A) => B): B = l match {
     case Nil => z
     case Cons(h, t) => f(foldLeft(t, z)(f), h)
   }
@@ -132,7 +132,7 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def filterUsingFlatMap[A](l: List[A], p: A => Boolean): List[A] = flatMap(l)(element => if (p(element)) Cons(element, Nil) else Nil)
 
-  def map[A,B](l: List[A])(f: A => B): List[B] = l match {
+  def map[A, B](l: List[A])(f: A => B): List[B] = l match {
     case Nil => Nil
     case Cons(h, t) => Cons(f(h), map(t)(f))
   }
@@ -145,7 +145,7 @@ object List { // `List` companion object. Contains functions for creating and wo
     }
   }
 
-  def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = flatten(map(l)(f))
+  def flatMap[A, B](l: List[A])(f: A => List[B]): List[B] = flatten(map(l)(f))
 
   def partition[A](l: List[A], p: A => Boolean): List[List[A]] = partitionUsingRightFold(l, p)
 
@@ -154,7 +154,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   )
 
   def addToPartitionedList[A](sepList: List[List[A]], element: A, addToFirstList: Boolean): List[List[A]] = sepList match {
-    case Cons(f, Cons(s, Nil)) => if (addToFirstList) Cons(Cons(element, f), Cons(s, Nil)) else  Cons(f, Cons(Cons(element, s), Nil))
+    case Cons(f, Cons(s, Nil)) => if (addToFirstList) Cons(Cons(element, f), Cons(s, Nil)) else Cons(f, Cons(Cons(element, s), Nil))
     case _ => List(List(), List())
 
   }
@@ -170,8 +170,24 @@ object List { // `List` companion object. Contains functions for creating and wo
     (avgContext, item) => ((avgContext._1 * avgContext._2 + item) / (avgContext._2 + 1), avgContext._2 + 1)
   )._1
 
-  def zipWith[A, B](list: List[A], other: List[B]): List[(A, B)] = ???
+  def zipWith[A, B](list: List[A], other: List[B]): List[(A, B)] = list match {
+    case Nil => Nil
+    case Cons(head, tail) => other match {
+      case Nil => Nil
+      case Cons(headOther, tailOther) => Cons((head, headOther), zipWith(tail, tailOther))
+    }
+  }
 
-  def hasSubsequence[A](list: List[A], subList: List[A]): Boolean = ???
+  def hasSubsequence[A](list: List[A], subList: List[A]): Boolean = subList match {
+    case Nil => true
+    case Cons(head, tail) => list match {
+      case Nil => false
+      case Cons(orHead, orTail) =>
+        if (orHead.equals(head))
+          hasSubsequence(orTail, tail)
+        else
+          hasSubsequence(orTail, subList)
+    }
+  }
 
 }
