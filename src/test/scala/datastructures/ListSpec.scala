@@ -121,6 +121,14 @@ class ListSpec extends FlatSpec with Matchers {
     )
   }
 
+  "partition" should "partition elements to a Pair of Lists using a predicate" in {
+    val list = List(1, 2, 3, 4)
+    val predicate: Int => Boolean = _ % 2 == 0
+
+    partition(list, predicate) shouldBe (List(2, 4), List(1, 3))
+    partition(List(), predicate) shouldBe (List(), List())
+    partition(List(1, 3), predicate) shouldBe (List(), List(1, 3))
+
   behavior of "List"
 
   it should "avg with foldLeft" in {
