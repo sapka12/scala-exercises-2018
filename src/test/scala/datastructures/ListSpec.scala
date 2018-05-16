@@ -123,6 +123,14 @@ class ListSpec extends FlatSpec with Matchers {
     )
   }
 
+  "partition" should "partition elements to a Pair of Lists using a predicate" in {
+    val list = List(1, 2, 3, 4)
+    val predicate: Int => Boolean = _ % 2 == 0
+
+    partition(list, predicate) shouldBe (List(2, 4), List(1, 3))
+    partition(List(), predicate) shouldBe (List(), List())
+    partition(List(1, 3), predicate) shouldBe (List(), List(1, 3))
+
   behavior of "List"
 
   it should "avg with foldLeft" in {
@@ -164,4 +172,27 @@ class ListSpec extends FlatSpec with Matchers {
     fact(5) shouldBe 120
 
   }
+
+  "zipWith" should "zip 2 lists" in {
+    zipWith(List(1, 2, 3), List("a", "b", "c")) shouldBe List((1, "a"), (2, "b"), (3, "c"))
+    zipWith(List(1, 2), List("a", "b", "c")) shouldBe List((1, "a"), (2, "b"))
+    zipWith(List(1, 2, 3), List("a", "b")) shouldBe List((1, "a"), (2, "b"))
+    zipWith(List[Int](), List("a", "b", "c")) shouldBe List()
+    zipWith(List(1, 2, 3), List()) shouldBe List()
+
+    map[(Int, Int), Int](
+      zipWith(List(1, 2, 3), List(4, 5, 6))
+    )(e => e._1 * e._2) shouldBe List(4, 10, 18)
+  }
+
+  "hasSubsequence" should "..." in {
+    hasSubsequence(List(1, 2, 3), List()) shouldBe true
+    hasSubsequence(List(1, 2, 3), List(1, 2)) shouldBe true
+    hasSubsequence(List(1, 2, 3), List(2, 3)) shouldBe true
+    hasSubsequence(List(1, 2, 3), List(2, 1)) shouldBe false
+    hasSubsequence(List(), List()) shouldBe true
+    hasSubsequence(List(), List(1)) shouldBe false
+  }
+
+
 }
