@@ -102,4 +102,9 @@ object List { // `List` companion object. Contains functions for creating and wo
   def flatMap[A,B](l: List[A])(f: A => List[B]): List[B] = ???
 
   def partition[A](l: List[A], p: A => Boolean): (List[A], List[A]) = ???
+  
+  def zipWith[A, B](list: List[A], other: List[B]): List[(A, B)] = ???
+
+  def hasSubsequence[A](list: List[A], subList: List[A]): Boolean = ???
+  
 }
