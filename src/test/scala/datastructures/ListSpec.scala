@@ -1,8 +1,8 @@
 package datastructures
 
-import org.scalatest.{FlatSpec, Matchers}
 import fpinscala.datastructures.List
 import fpinscala.datastructures.List._
+import org.scalatest.{FlatSpec, Matchers}
 
 import scala.annotation.tailrec
 
@@ -20,7 +20,7 @@ class ListSpec extends FlatSpec with Matchers {
 
   "takeWhile" should "behave like takeWhile" in {
 
-    val f: Int => Boolean =  _ < 3
+    val f: Int => Boolean = _ < 3
 
     takeWhile(List(1, 2, 3), f) shouldBe List(1, 2)
     takeWhile(List(1), f) shouldBe List(1)
@@ -29,7 +29,7 @@ class ListSpec extends FlatSpec with Matchers {
 
   "dropWhile" should "behave like dropWhile" in {
 
-    val f: Int => Boolean =  _ < 3
+    val f: Int => Boolean = _ < 3
 
     dropWhile(List(1, 2, 3), f) shouldBe List(3)
     dropWhile(List(3, 2, 1), f) shouldBe List(3, 2, 1)
@@ -50,6 +50,7 @@ class ListSpec extends FlatSpec with Matchers {
 
   it should "sum" in {
     def add(x: Int, y: Int) = x + y
+
     foldLeft[Int, Int](List(1, 2, 3), 0)(add) shouldBe 6
     foldLeft[Int, Int](List(), 0)(add) shouldBe 0
   }
@@ -88,7 +89,7 @@ class ListSpec extends FlatSpec with Matchers {
     append(l1, l2) shouldBe List(1, 2, 3, 4, 5, 6)
   }
 
-  "flatten"  should "flatten" in {
+  "flatten" should "flatten" in {
     flatten(List(List(1, 2), List(3))) shouldBe List(1, 2, 3)
     flatten(List(List(), List(3))) shouldBe List(3)
     flatten(List(List(), List(2, 3))) shouldBe List(2, 3)
@@ -127,9 +128,10 @@ class ListSpec extends FlatSpec with Matchers {
     val list = List(1, 2, 3, 4)
     val predicate: Int => Boolean = _ % 2 == 0
 
-    partition(list, predicate) shouldBe (List(2, 4), List(1, 3))
-    partition(List(), predicate) shouldBe (List(), List())
-    partition(List(1, 3), predicate) shouldBe (List(), List(1, 3))
+    partition(list, predicate) shouldBe(List(2, 4), List(1, 3))
+    partition(List(), predicate) shouldBe(List(), List())
+    partition(List(1, 3), predicate) shouldBe(List(), List(1, 3))
+  }
 
   behavior of "List"
 
