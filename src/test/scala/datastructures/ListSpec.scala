@@ -136,4 +136,27 @@ class ListSpec extends FlatSpec with Matchers {
     avg(List(1, 2, 3, 4)) shouldBe 2.5
     avg(List()) shouldBe 0
   }
+
+  "zipWith" should "zip 2 lists" in {
+    zipWith(List(1, 2, 3), List("a", "b", "c")) shouldBe List((1, "a"), (2, "b"), (3, "c"))
+    zipWith(List(1, 2), List("a", "b", "c")) shouldBe List((1, "a"), (2, "b"))
+    zipWith(List(1, 2, 3), List("a", "b")) shouldBe List((1, "a"), (2, "b"))
+    zipWith(List[Int](), List("a", "b", "c")) shouldBe List()
+    zipWith(List(1, 2, 3), List()) shouldBe List()
+
+    map[(Int, Int), Int](
+      zipWith(List(1, 2, 3), List(4, 5, 6))
+    )(e => e._1 * e._2) shouldBe List(4, 10, 18)
+  }
+
+  "hasSubsequence" should "..." in {
+    hasSubsequence(List(1, 2, 3), List()) shouldBe true
+    hasSubsequence(List(1, 2, 3), List(1, 2)) shouldBe true
+    hasSubsequence(List(1, 2, 3), List(2, 3)) shouldBe true
+    hasSubsequence(List(1, 2, 3), List(2, 1)) shouldBe false
+    hasSubsequence(List(), List()) shouldBe true
+    hasSubsequence(List(), List(1)) shouldBe false
+  }
+
+
 }
