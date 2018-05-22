@@ -1,6 +1,5 @@
 package datastructures
 
-import fpinscala.datastructures.{Branch, Leaf, Tree}
 import org.scalatest.{FlatSpec, Matchers}
 
 class TreeSpec extends FlatSpec with Matchers {

@@ -1,4 +1,4 @@
-package fpinscala.datastructures
+package datastructures
 
 sealed trait Tree[+A]
 case class Leaf[A](value: A) extends Tree[A]
@@ -14,9 +14,10 @@ object Tree {
 
   def map[A, B](tree: Tree[A])(f: A => B): Tree[B] = fold[A, Tree[B]](tree)(a => Leaf(f(a)))(Branch(_, _))
 
-  def size(tree: Tree[Int]): Int = fold(tree)(_ => 1)(_ + _)
+  def size(tree: Tree[Int]): Int = fold(tree)(_ => 1)(_ + _ + 1)
 
-  def maximum(tree: Tree[Int]): Int = ???
-  def depth(tree: Tree[Int]):Int = fold(tree)(_ => 1)(_ + _)
+  def maximum(tree: Tree[Int]): Int = fold(tree)(identity)(_ max _)
+
+  def depth(tree: Tree[Int]):Int = fold(tree)(_ => 0)(_ max _ + 1)
 
 }
