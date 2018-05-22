@@ -44,8 +44,8 @@ class TreeSpec extends FlatSpec with Matchers {
 //    val sum: (Int, Int) => Int = _ + _
 //
 //    Tree.fold(Leaf("asdf"))(wordLength)(sum) shouldBe 4
-//    Tree.depth(Branch(Leaf("hello"), Leaf("world")))(wordLength)(sum) shouldBe 10
-//    Tree.depth(Branch(Leaf(1), Branch(Leaf(2), Leaf(3))))(identity)(sum) shouldBe 6
+//    Tree.fold(Branch(Leaf("hello"), Leaf("world")))(wordLength)(sum) shouldBe 10
+//    Tree.fold(Branch(Leaf(1), Branch(Leaf(2), Leaf(3))))(identity)(sum) shouldBe 6
 //  }
 
 }
