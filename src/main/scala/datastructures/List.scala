@@ -38,7 +38,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   def append[A](a1: List[A], a2: List[A]): List[A] =
     a1 match {
       case Nil => a2
-      case Cons(h, t) => Cons(h, append(t, a2))
+      case Cons(h,t) => Cons(h, append(t, a2))
     }
 
   //  def foldRight[A,B](as: List[A], z: B)(f: (A, B) => B): B = // Utility functions
@@ -50,7 +50,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B): B = foldLeft(reverse(as), z)((b, a) => f(a, b))
 
   def sum2(ns: List[Int]) =
-    foldRight(ns, 0)((x, y) => x + y)
+    foldRight(ns, 0)((x,y) => x + y)
 
   def product2(ns: List[Double]) =
     foldRight(ns, 1.0)(_ * _) // `_ * _` is more concise notation for `(x,y) => x * y`; see sidebar
@@ -69,7 +69,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   def drop[A](l: List[A], n: Int): List[A] =
     if (n <= 0) l
     else l match {
-      case Cons(h, t) => drop(t, n - 1)
+      case Cons(h, t) => drop(t, n-1)
       case _ => Nil
     }
 
@@ -136,6 +136,24 @@ object List { // `List` companion object. Contains functions for creating and wo
 
   def zipWith[A, B](list: List[A], other: List[B]): List[(A, B)] = ???
 
-  def hasSubsequence[A](list: List[A], subList: List[A]): Boolean = ???
+  def zipWith[A, B](list: List[A], other: List[B]): List[(A, B)] = list match {
+    case Nil => Nil
+    case Cons(head, tail) => other match {
+      case Nil => Nil
+      case Cons(headOther, tailOther) => Cons((head, headOther), zipWith(tail, tailOther))
+    }
+  }
+
+  def hasSubsequence[A](list: List[A], subList: List[A]): Boolean = subList match {
+    case Nil => true
+    case Cons(head, tail) => list match {
+      case Nil => false
+      case Cons(orHead, orTail) =>
+        if (orHead.equals(head))
+          hasSubsequence(orTail, tail)
+        else
+          hasSubsequence(orTail, subList)
+    }
+  }
 
 }

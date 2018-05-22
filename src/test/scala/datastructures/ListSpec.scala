@@ -1,5 +1,6 @@
 package datastructures
 
+import org.scalatest.{FlatSpec, Matchers}
 import fpinscala.datastructures.List
 import fpinscala.datastructures.List._
 import org.scalatest.{FlatSpec, Matchers}
@@ -89,7 +90,7 @@ class ListSpec extends FlatSpec with Matchers {
     append(l1, l2) shouldBe List(1, 2, 3, 4, 5, 6)
   }
 
-  "flatten" should "flatten" in {
+  "flatten"  should "flatten" in {
     flatten(List(List(1, 2), List(3))) shouldBe List(1, 2, 3)
     flatten(List(List(), List(3))) shouldBe List(3)
     flatten(List(List(), List(2, 3))) shouldBe List(2, 3)
@@ -194,6 +195,7 @@ class ListSpec extends FlatSpec with Matchers {
     hasSubsequence(List(1, 2, 3), List(2, 1)) shouldBe false
     hasSubsequence(List(), List()) shouldBe true
     hasSubsequence(List(), List(1)) shouldBe false
+>>>>>>>>> Temporary merge branch 2
   }
 
 
