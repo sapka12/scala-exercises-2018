@@ -29,8 +29,8 @@ class TreeSpec extends FlatSpec with Matchers {
   "map" should "map the tre via f()" in {
     val abs: Int => Int = Math.abs(_)
 
-    Tree.map(Leaf(123))(abs) shouldBe 123
-    Tree.map(Leaf(-123))(abs) shouldBe 123
+    Tree.map(Leaf(123))(abs) shouldBe Leaf(123)
+    Tree.map(Leaf(-123))(abs) shouldBe Leaf(123)
     Tree.map(Branch(Leaf(1), Branch(Leaf(-2), Leaf(3))))(abs) shouldBe Branch(Leaf(1), Branch(Leaf(2), Leaf(3)))
 
     val wordLength: String => Int = _.length
