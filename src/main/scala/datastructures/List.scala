@@ -113,7 +113,7 @@ object List { // `List` companion object. Contains functions for creating and wo
   //    else b
   //  )
 
-  def map[A, B](l: List[A])(f: A => B): List[B] = foldLeft[A, List[B]](l, Nil)((b, a) => append(b, List(f(a))))
+  def map[A, B](l: List[A])(f: A => B): List[B] = foldRight[A, List[B]](l, Nil)((a, bs) => Cons(f(a), bs))
 
   def flatten[A](l: List[List[A]]): List[A] = foldLeft[List[A], List[A]](l, Nil)((b, a) =>
     append(b, a)
@@ -133,8 +133,6 @@ object List { // `List` companion object. Contains functions for creating and wo
         )
     }
   }
-
-  def zipWith[A, B](list: List[A], other: List[B]): List[(A, B)] = ???
 
   def zipWith[A, B](list: List[A], other: List[B]): List[(A, B)] = list match {
     case Nil => Nil

@@ -1,6 +1,5 @@
 package datastructures
 
-import org.scalatest.{FlatSpec, Matchers}
 import fpinscala.datastructures.List
 import fpinscala.datastructures.List._
 import org.scalatest.{FlatSpec, Matchers}
@@ -195,8 +194,5 @@ class ListSpec extends FlatSpec with Matchers {
     hasSubsequence(List(1, 2, 3), List(2, 1)) shouldBe false
     hasSubsequence(List(), List()) shouldBe true
     hasSubsequence(List(), List(1)) shouldBe false
->>>>>>>>> Temporary merge branch 2
   }
-
-
 }
