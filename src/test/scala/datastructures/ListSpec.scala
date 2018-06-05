@@ -1,7 +1,6 @@
 package datastructures
 
-import fpinscala.datastructures.List
-import fpinscala.datastructures.List._
+import datastructures.List._
 import org.scalatest.{FlatSpec, Matchers}
 
 import scala.annotation.tailrec
@@ -137,7 +136,7 @@ class ListSpec extends FlatSpec with Matchers {
 
   it should "avg with foldLeft" in {
 
-    import fpinscala.datastructures.Nil
+    import datastructures.Nil
 
     def avg(nums: List[Double], default: Double = 0.0): Double = nums match {
       case Nil => default
