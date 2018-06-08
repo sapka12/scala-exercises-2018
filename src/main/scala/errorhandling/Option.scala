@@ -2,6 +2,8 @@ package errorhandling
 
 import scala.{Option => _, Some => _, Either => _, _} // hide std library `Option`, `Some` and `Either`, since we are writing our own in this chapter
 
+import datastructures.List
+
 sealed trait Option[+A] {
 
   //hint you can use pattern matching to implement map and getOrElse, otherwise you do not need to use
