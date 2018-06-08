@@ -6,23 +6,6 @@ import datastructures.List
 
 class OptionSpec extends FlatSpec with Matchers {
 
-  def failingFn(i: Int): Int = {
-    val y: Int = throw new Exception("fail!") // `val y: Int = ...` declares `y` as having type `Int`, and sets it equal to the right hand side of the `=`.
-    try {
-      val x = 42 + 5
-      x + y
-    }
-    catch { case e: Exception => 43 } // A `catch` block is just a pattern matching block like the ones we've seen. `case e: Exception` is a pattern that matches any `Exception`, and it binds this value to the identifier `e`. The match returns the value 43.
-  }
-
-  def failingFn2(i: Int): Int = {
-    try {
-      val x = 42 + 5
-      x + ((throw new Exception("fail!")): Int) // A thrown Exception can be given any type; here we're annotating it with the type `Int`
-    }
-    catch { case e: Exception => 43 }
-  }
-
   val notNegative: Double => Boolean = _ >= 0
 
   def sqrt(a: Double): Option[Double] =
@@ -34,8 +17,8 @@ class OptionSpec extends FlatSpec with Matchers {
     val some = Some("123")
     val none: Option[String] = None
 
-    some.map(_.size) shouldBe Some(3)
-    none.map(_.size) shouldBe None
+    some.map(_.length) shouldBe Some(3)
+    none.map(_.length) shouldBe None
   }
 
   "getOrElse" should "return the value inside Option or the default value" in {
@@ -88,7 +71,7 @@ class OptionSpec extends FlatSpec with Matchers {
   }
 
   "map2" should "map 2 Options int 1 by a func" in {
-    def f(i: Int, s: String): Int = s.size * i
+    def f(i: Int, s: String): Int = s.length * i
 
     Option.map2[Int, String, Int](Some(2), Some("hello"))(f) shouldBe Some(10)
     Option.map2[Int, String, Int](None: Option[Int], Some("hello"))(f) shouldBe None
@@ -105,7 +88,7 @@ class OptionSpec extends FlatSpec with Matchers {
   }
 
   "traverse" should "convert a list into an option of list by a func" in {
-    Option.traverse[String, Int](List("a", "b", "asdf"))(s => Some(s.size)) shouldBe Some(List(1, 1, 4))
+    Option.traverse[String, Int](List("a", "b", "asdf"))(s => Some(s.length)) shouldBe Some(List(1, 1, 4))
     Option.traverse[Double, Double](List(1, 0, -1))(sqrt) shouldBe None
     Option.traverse[Double, Double](List(4, 1, 0))(sqrt) shouldBe Some(List(2, 1, 0))
   }
