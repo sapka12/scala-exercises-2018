@@ -27,14 +27,7 @@ class ValidatedSpec extends FlatSpec with Matchers {
   behavior of "option"
 
   it should "do a simple validation" in {
-    def createAdultFemaleUser(name: String, age: Int, sex: Option[Sex] = None): Option[User] = for {
-      n <- Some(name)
-      a <- Some(age)
-      s <- sex
-      if optimalLength(n)
-      if adult(a)
-      if female(s)
-    } yield User(n, a, sex)
+    def createAdultFemaleUser(name: String, age: Int, sex: Option[Sex] = None): Option[User] = ???
 
     createAdultFemaleUser("John", 10) shouldBe None
     createAdultFemaleUser("John Doe", 10) shouldBe None
@@ -46,11 +39,7 @@ class ValidatedSpec extends FlatSpec with Matchers {
 
   it should "do validation with error message" in {
 
-    def createAdultFemaleUser(name: String, age: Int, sex: Option[Sex] = None): Either[String, User] = for {
-      n <- eitherName(name)
-      a <- eitherAge(age)
-      s <- eitherSex(sex)
-    } yield User(n, a, Some(s))
+    def createAdultFemaleUser(name: String, age: Int, sex: Option[Sex] = None): Either[String, User] = ???
 
     createAdultFemaleUser("John", 10) shouldBe Left(NAME_ERROR_MSG)
     createAdultFemaleUser("John Doe", 10) shouldBe Left(AGE_ERROR_MSG)
@@ -63,16 +52,7 @@ class ValidatedSpec extends FlatSpec with Matchers {
   behavior of "validated"
 
   it should "do validation with error message(s)" in {
-    def createAdultFemaleUser(name: String, age: Int,  sex: Option[Sex] = None): Validated[NonEmptyList[String], User] = {
-      val n = if(optimalLength(name)) name.validNel else NAME_ERROR_MSG.invalidNel
-      val a = if (adult(age)) age.validNel else AGE_ERROR_MSG.invalidNel
-      val s = sex match {
-        case Some(_sex) if female(_sex) => Some(_sex).validNel
-        case _ => SEX_ERROR_MSG.invalidNel
-      }
-
-      (n, a, s) mapN User
-    }
+    def createAdultFemaleUser(name: String, age: Int,  sex: Option[Sex] = None): Validated[NonEmptyList[String], User] = ???
 
     createAdultFemaleUser("John", 10) shouldBe
       Invalid(NonEmptyList.of(NAME_ERROR_MSG, AGE_ERROR_MSG, SEX_ERROR_MSG))
